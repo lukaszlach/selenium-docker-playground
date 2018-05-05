@@ -1,0 +1,37 @@
+version: '3'
+
+services:
+  selenium-hub:
+    image: selenium/hub
+    container_name: selenium_hub
+    ports:
+      - 4444:4444
+
+  chrome:
+    image: selenium/node-chrome
+    container_name: selenium_chrome
+    environment:
+      HUB_HOST: hub
+    links:
+      - selenium-hub:hub
+    depends_on:
+      - selenium-hub
+    shm_size: '2g'
+
+  firefox:
+    image: selenium/node-firefox
+    container_name: selenium_firefox
+    environment:
+      HUB_HOST: hub
+    links:
+      - selenium-hub:hub
+    depends_on:
+      - selenium-hub
+
+  node:
+    build: ./node
+    container_name: selenium_node
+    volumes:
+      - ./tests:/tests
+    working_dir: /tests
+    network_mode: host
