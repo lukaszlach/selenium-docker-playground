@@ -29,7 +29,7 @@ services:
       - selenium-hub
 
   node:
-    build: ./node
+    image: node:10-stretch
     container_name: selenium_node
     volumes:
       - ./tests:/tests
